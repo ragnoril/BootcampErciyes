@@ -41,8 +41,11 @@ namespace ShootingGame
 
         private void Spawn(Vector3 pos)
         {
-            GameObject go = Instantiate(SpawnPrefab, pos, Quaternion.identity);
-            go.GetComponent<EnemyAgent>().Target = Target;
+            //GameObject go = Instantiate(SpawnPrefab, pos, Quaternion.identity);
+            EnemyAgent enemy = ObjectPool.Instance.EnemyPool.Get();
+            enemy.transform.position = pos;
+            enemy.transform.rotation = Quaternion.identity;
+            enemy.Target = Target;
         }
     }
 }

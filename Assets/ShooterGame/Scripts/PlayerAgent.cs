@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ShootingGame
 {
     public class PlayerAgent : MonoBehaviour
     {
+        public UIManager UI;
+        public HealthBar HPBar;
+
         public float MoveSpeed;
         public Rigidbody RBody;
         public Camera GameCam;
@@ -16,11 +20,20 @@ namespace ShootingGame
         private float _shootingTimer;
         private bool _canShoot;
 
+        public int MaxHP;
+        public int CurrentHP;
+        public int KillCount;
+
         // Start is called before the first frame update
         void Start()
         {
             RBody = GetComponent<Rigidbody>();
             _canShoot = true;
+            _shootingTimer = 0f;
+            CurrentHP = MaxHP;
+            UI.UpdateHitPoints(MaxHP, CurrentHP);
+            UI.UpdateKillCount(KillCount);
+            HPBar.UpdateHealthBar(MaxHP, CurrentHP);
         }
 
         // Update is called once per frame
@@ -49,13 +62,38 @@ namespace ShootingGame
 
             if (Input.GetMouseButton(0) && _canShoot)
             {
-                Vector3 bulletPos = transform.position + transform.forward;
-                GameObject go = Instantiate(BulletPrefab, bulletPos, Quaternion.identity);
-                go.GetComponent<BulletAgent>().Fire(transform.forward);
-                _canShoot = false;
-                _shootingTimer = RateOfFire;
+                Fire();
             }
             
+        }
+
+        public void Fire()
+        {
+            Vector3 bulletPos = transform.position + transform.forward;
+            BulletAgent bullet = ObjectPool.Instance.BulletPool.Get();
+
+            bullet.transform.position = bulletPos;
+            bullet.transform.rotation = Quaternion.identity;
+            bullet.Fire(transform.forward);
+            _canShoot = false;
+            _shootingTimer = RateOfFire;
+
+        }
+
+        public void GetHurt(int damage)
+        {
+            CurrentHP -= damage;
+            UI.UpdateHitPoints(MaxHP, CurrentHP);
+            HPBar.UpdateHealthBar(MaxHP, CurrentHP);
+
+            if (CurrentHP < 0)
+                UI.ShowGameOverCanvas();
+        }
+
+        public void EnemyKilled()
+        {
+            KillCount += 1;
+            UI.UpdateKillCount(KillCount);
         }
     }
 

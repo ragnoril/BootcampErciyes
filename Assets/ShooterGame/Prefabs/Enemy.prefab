@@ -132,6 +132,8 @@ MonoBehaviour:
   Target: {fileID: 0}
   RBody: {fileID: 7086646640201267412}
   MoveSpeed: 100
+  RateOfAttack: 1
+  AttackPower: 5
 --- !u!1 &7086646640808468400
 GameObject:
   m_ObjectHideFlags: 0
