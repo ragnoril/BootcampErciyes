@@ -14,6 +14,14 @@ namespace ShootingGame
         private void Start()
         {
             _myRotation = transform.rotation;
+
+            GameManager.Instance.Events.OnPlayerHealthChanged += UpdateHealthBar;
+
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance.Events.OnPlayerHealthChanged -= UpdateHealthBar;
         }
 
         private void Update()
@@ -21,13 +29,12 @@ namespace ShootingGame
             transform.rotation = _myRotation;
         }
 
-        public void UpdateHealthBar(float max, float current)
+        public void UpdateHealthBar(int max, int current)
         {
             float maxVal = BackBar.rect.width;
             float newVal = maxVal * current / max;
 
             FillBar.sizeDelta = new Vector2(newVal, FillBar.sizeDelta.y);
-
         }
     }
 

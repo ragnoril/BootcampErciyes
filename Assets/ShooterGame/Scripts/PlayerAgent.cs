@@ -14,8 +14,6 @@ namespace ShootingGame
         public Rigidbody RBody;
         public Camera GameCam;
 
-        public GameObject BulletPrefab;
-
         public float RateOfFire;
         private float _shootingTimer;
         private bool _canShoot;
@@ -24,16 +22,27 @@ namespace ShootingGame
         public int CurrentHP;
         public int KillCount;
 
-        // Start is called before the first frame update
-        void Start()
+        private void OnDestroy()
         {
+            GameManager.Instance.Events.OnEnemyKilled -= EnemyKilled;
+            GameManager.Instance.Events.OnPlayerHit -= GetHurt;
+        }
+
+        // Start is called before the first frame update
+        public void Init()
+        {
+            GameManager.Instance.Events.OnEnemyKilled += EnemyKilled;
+            GameManager.Instance.Events.OnPlayerHit += GetHurt;
+
             RBody = GetComponent<Rigidbody>();
             _canShoot = true;
             _shootingTimer = 0f;
             CurrentHP = MaxHP;
-            UI.UpdateHitPoints(MaxHP, CurrentHP);
-            UI.UpdateKillCount(KillCount);
-            HPBar.UpdateHealthBar(MaxHP, CurrentHP);
+            KillCount = 0;
+            GameManager.Instance.Events.PlayerHealthChanged(MaxHP, CurrentHP);
+            GameManager.Instance.Events.KillCountChanged(KillCount);
+
+
         }
 
         // Update is called once per frame
@@ -55,7 +64,7 @@ namespace ShootingGame
             else
                 _canShoot = true;
 
-            Vector3 targetPos = GameCam.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 25f);
+            Vector3 targetPos = GameCam.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * GameCam.transform.position.y);
             targetPos.y = transform.position.y;
 
             transform.LookAt(targetPos);
@@ -83,17 +92,17 @@ namespace ShootingGame
         public void GetHurt(int damage)
         {
             CurrentHP -= damage;
-            UI.UpdateHitPoints(MaxHP, CurrentHP);
-            HPBar.UpdateHealthBar(MaxHP, CurrentHP);
+            GameManager.Instance.Events.PlayerHealthChanged(MaxHP, CurrentHP);
 
             if (CurrentHP < 0)
-                UI.ShowGameOverCanvas();
+                GameManager.Instance.Events.GameOver();
+
         }
 
         public void EnemyKilled()
         {
             KillCount += 1;
-            UI.UpdateKillCount(KillCount);
+            GameManager.Instance.Events.KillCountChanged(KillCount);
         }
     }
 

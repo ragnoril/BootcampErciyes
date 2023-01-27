@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace ShootingGame
 {
@@ -11,9 +12,30 @@ namespace ShootingGame
     {
         public TMP_Text HitPointText;
         public TMP_Text KillCountText;
+        public TMP_Text EnemyCountText;
 
         public GameObject GameOverCanvas;
 
+        public void Init()
+        {
+            GameManager.Instance.Events.OnPlayerHealthChanged += UpdateHitPoints;
+            GameManager.Instance.Events.OnKillCountChanged += UpdateKillCount;
+            GameManager.Instance.Events.OnGameEnded += ShowGameOverCanvas;
+            GameManager.Instance.Events.OnEnemyCountChanged += UpdateEnemyCount;
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance.Events.OnPlayerHealthChanged -= UpdateHitPoints;
+            GameManager.Instance.Events.OnKillCountChanged -= UpdateKillCount;
+            GameManager.Instance.Events.OnGameEnded -= ShowGameOverCanvas;
+            GameManager.Instance.Events.OnEnemyCountChanged -= UpdateEnemyCount;
+        }
+
+        private void UpdateEnemyCount(int enemyCount)
+        {
+            EnemyCountText.text = enemyCount.ToString();
+        }
 
         public void UpdateHitPoints(int maxHP, int currentHP)
         {

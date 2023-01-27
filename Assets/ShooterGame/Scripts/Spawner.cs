@@ -7,7 +7,6 @@ namespace ShootingGame
 {
     public class Spawner : MonoBehaviour
     {
-        public GameObject SpawnPrefab;
         public float SpawnCount;
         public float SpawnTimer;
         private float _spawnCooldown;
@@ -45,7 +44,8 @@ namespace ShootingGame
             EnemyAgent enemy = ObjectPool.Instance.EnemyPool.Get();
             enemy.transform.position = pos;
             enemy.transform.rotation = Quaternion.identity;
-            enemy.Target = Target;
+            enemy.Init(Target);
+            GameManager.Instance.Events.EnemySpawned();
         }
     }
 }

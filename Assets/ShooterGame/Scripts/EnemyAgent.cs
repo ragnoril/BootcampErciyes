@@ -9,6 +9,8 @@ namespace ShootingGame
         public Transform Target;
         private PlayerAgent _player;
 
+        public Animator AnimController;
+
         public Rigidbody RBody;
         public float MoveSpeed;
 
@@ -18,8 +20,12 @@ namespace ShootingGame
 
         public int AttackPower;
 
-        private void Start()
+        public bool _isDead;
+
+        public void Init(Transform target)
         {
+            Target = target;
+            _isDead = false;
             _canAttack = true;
             _attackTimer = 0f;
             _player = Target.GetComponent<PlayerAgent>();
@@ -27,9 +33,16 @@ namespace ShootingGame
 
         private void FixedUpdate()
         {
+            if (_isDead) return;
+
             transform.LookAt(Target);
 
             RBody.velocity = transform.forward * MoveSpeed * Time.fixedDeltaTime;
+
+            if (RBody.velocity.magnitude > 0.1f)
+                AnimController.SetBool("IsMoving", true);
+            else
+                AnimController.SetBool("IsMoving", false);
         }
 
         private void Update()
@@ -40,13 +53,24 @@ namespace ShootingGame
                 _canAttack = true;
         }
 
+        IEnumerator KillSequence()
+        {
+            _isDead = true;
+
+            RBody.velocity = Vector3.zero;
+            RBody.angularVelocity = Vector3.zero;
+
+            AnimController.SetBool("IsDead", true);
+            yield return new WaitForSeconds(1.5f);
+            ObjectPool.Instance.EnemyPool.Release(this);
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.collider.tag == "Bullet")
             {
-                _player.EnemyKilled();
-
-                ObjectPool.Instance.EnemyPool.Release(this);
+                StartCoroutine(KillSequence());
+                GameManager.Instance.Events.EnemyKilled();
             }
         }
 
@@ -63,8 +87,9 @@ namespace ShootingGame
             _canAttack = false;
             _attackTimer = RateOfAttack;
 
-            _player.GetHurt(AttackPower);
-
+            AnimController.SetTrigger("Attack");
+            GameManager.Instance.Events.PlayerGotHit(AttackPower);
         }
+
     }
 }
