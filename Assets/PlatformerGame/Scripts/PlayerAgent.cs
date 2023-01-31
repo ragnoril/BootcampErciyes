@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlatformerGame
 {
@@ -12,12 +13,13 @@ namespace PlatformerGame
 
         public float JumpSpeed;
         public float MoveSpeed;
+        public float DashFactor;
 
         public Transform TouchGround;
         public bool IsGrounded;
         public LayerMask GroundLayer;
 
-
+        public int Coins;
 
         void Start()
         {
@@ -42,8 +44,11 @@ namespace PlatformerGame
                 RBody.AddForce(Vector2.up * JumpSpeed, ForceMode2D.Impulse);
             }
 
+            float dashAmount = 1f;
+            if (Input.GetKey(KeyCode.LeftShift))
+                dashAmount = DashFactor;
 
-            Vector2 newVel = new Vector2(moveX * MoveSpeed * Time.fixedDeltaTime, RBody.velocity.y);
+            Vector2 newVel = new Vector2(moveX * MoveSpeed * dashAmount * Time.fixedDeltaTime, RBody.velocity.y);
             RBody.velocity = newVel;
 
             AnimController.SetBool("IsGrounded", IsGrounded);
@@ -53,6 +58,24 @@ namespace PlatformerGame
             else
                 AnimController.SetBool("IsWalking", false);
 
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.tag == "FallPlace")
+            {
+                SceneManager.LoadScene("GameScene");
+            }
+
+            if (collision.tag == "PickUp")
+            {
+                var item = collision.GetComponent<ItemAgent>();
+                if (item.Type == ItemType.Coin)
+                {
+                    Coins += item.Amount;
+                }
+                Destroy(item.gameObject);
+            }
         }
     }
 }
