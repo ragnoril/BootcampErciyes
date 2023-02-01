@@ -35,8 +35,9 @@ namespace PlatformerGame
             if (collision.tag == "Player")
             {
                 SfxPlayer.PlayOneShot(HitSoundClip);
-                Destroy(this.gameObject, 0.2f);
-                //Destroy(this.gameObject);                
+                //AudioManager.Instance.PlaySound(HitSoundClip);
+
+                Destroy(this.gameObject, 0.2f);               
             }
         }
     }

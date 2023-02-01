@@ -104,6 +104,7 @@ namespace ShootingGame
             KillCount += 1;
             GameManager.Instance.Events.KillCountChanged(KillCount);
         }
+
     }
 
 }

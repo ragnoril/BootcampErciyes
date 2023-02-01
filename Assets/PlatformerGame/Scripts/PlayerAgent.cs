@@ -21,6 +21,8 @@ namespace PlatformerGame
 
         public int Coins;
 
+        public GameObject Confetti;
+
         void Start()
         {
             RBody = GetComponent<Rigidbody2D>();
@@ -62,6 +64,12 @@ namespace PlatformerGame
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            if (collision.tag == "Finish")
+            {
+                Debug.Log("Level Finished!");
+                Instantiate(Confetti, new Vector3(0f, -4f, 0f), Quaternion.identity);
+            }
+
             if (collision.tag == "FallPlace")
             {
                 SceneManager.LoadScene("GameScene");
