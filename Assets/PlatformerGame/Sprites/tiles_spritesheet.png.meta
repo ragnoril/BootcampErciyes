@@ -104,7 +104,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 50
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -3689,10 +3689,9 @@ TextureImporter:
     nameFileIdTable:
       tiles_spritesheet_160: -792625037
       tiles_spritesheet_154: -1999385669
-      tiles_spritesheet_40: -2013825892
       tiles_spritesheet_51: -1824910934
       tiles_spritesheet_17: 303402448
-      tiles_spritesheet_11: 1082486009
+      tiles_spritesheet_32: 1808461309
       tiles_spritesheet_142: -1541736605
       tiles_spritesheet_168: -656037084
       tiles_spritesheet_97: 447221539
@@ -3718,6 +3717,7 @@ TextureImporter:
       tiles_spritesheet_6: -1686806996
       tiles_spritesheet_60: 1100050816
       tiles_spritesheet_1: 1632248305
+      tiles_spritesheet_91: 1608436902
       tiles_spritesheet_23: -875850226
       tiles_spritesheet_124: 21610789
       tiles_spritesheet_93: 280554769
@@ -3848,14 +3848,14 @@ TextureImporter:
       tiles_spritesheet_70: 458583101
       tiles_spritesheet_112: -1975880242
       tiles_spritesheet_73: 1167537887
+      tiles_spritesheet_40: -2013825892
       tiles_spritesheet_126: 358625970
-      tiles_spritesheet_98: -2043145615
+      tiles_spritesheet_39: -643200223
       tiles_spritesheet_86: 1461406832
+      tiles_spritesheet_98: -2043145615
       tiles_spritesheet_116: 1836432854
       tiles_spritesheet_54: -1380114033
-      tiles_spritesheet_39: -643200223
-      tiles_spritesheet_32: 1808461309
-      tiles_spritesheet_91: 1608436902
+      tiles_spritesheet_11: 1082486009
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

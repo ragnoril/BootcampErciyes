@@ -2,11 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Match3D
 {
     public class GameManager : MonoBehaviour
     {
+        public UIManager UI;
+
         public GameObject[] Prefabs;
 
         public Transform Pool;
@@ -25,9 +28,17 @@ namespace Match3D
 
         public event Action<SelectableItem> OnItemInsideChecker;
         public event Action<SelectableItem> OnItemLeftChecker;
+        public event Action OnItemMatch;
+        public event Action OnGameOver;
+
+        public int Score;
 
         private void Start()
         {
+            Score = 0;
+
+            UI.Init(this);
+
             Items = new List<SelectableItem>();
             ItemsToCheck = new List<SelectableItem>();
             GenerateItems();
@@ -51,9 +62,32 @@ namespace Match3D
             {
                 if (ItemsToCheck[0].ItemId == ItemsToCheck[1].ItemId)
                 {
-                    Debug.Log("Its a Match!");
+                    HandleMatch();
+                    CheckWinCondition();
                 }
             }
+        }
+
+        private void CheckWinCondition()
+        {
+            if (Items.Count == 0)
+            {
+                OnGameOver?.Invoke();
+            }
+        }
+
+
+        private void HandleMatch()
+        {
+            foreach(SelectableItem item in ItemsToCheck)
+            {
+                Items.Remove(item);
+                Destroy(item.gameObject);
+            }
+
+            ItemsToCheck.Clear();
+            Score += 200;
+            OnItemMatch?.Invoke();
         }
 
         public void ItemPlacedInsideChecker(SelectableItem item)
@@ -123,6 +157,11 @@ namespace Match3D
             SelectableItem item = go.GetComponent<SelectableItem>();
             item.Init(this);
             Items.Add(item);
+        }
+
+        public void PlayAgain()
+        {
+            SceneManager.LoadScene(0);
         }
     }
 
