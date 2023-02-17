@@ -653,7 +653,9 @@ MonoBehaviour:
   Boards:
   - {fileID: 11400000, guid: 85045a4c11be4564f9d030c130a780bc, type: 2}
   - {fileID: 11400000, guid: 33b35e4883bef484bbffb59eedd77706, type: 2}
-  LevelIndex: 8
+  - {fileID: 11400000, guid: 6abf7efa19529be44aee081b012c397a, type: 2}
+  - {fileID: 11400000, guid: 067258d1a969f234b9ded1f71d4800b6, type: 2}
+  LevelIndex: 3
   Board: {fileID: 1732071608}
   UI: {fileID: 381276175}
 --- !u!4 &1624196384
@@ -700,11 +702,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b2552f491866b47821b507d476138c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardWidth: 0
-  BoardHeight: 0
-  GameBoard: 
+  BoardWidth: 6
+  BoardHeight: 6
+  GameBoard: 010000000100000001000000030000000000000001000000030000000200000001000000000000000200000003000000010000000300000003000000020000000000000001000000000000000200000000000000010000000000000003000000030000000100000003000000000000000300000003000000000000000300000001000000000000000000000001000000
   TilePrefabName: BaseTilePrefab
-  TilePrefabSprites: []
+  TilePrefabSprites:
+  - {fileID: -2115172794, guid: 4cb2b932b188bbd48b6a57de6f9662e1, type: 3}
+  - {fileID: 620160898, guid: 4cb2b932b188bbd48b6a57de6f9662e1, type: 3}
+  - {fileID: -919813923, guid: 4cb2b932b188bbd48b6a57de6f9662e1, type: 3}
+  - {fileID: 589715310, guid: 4cb2b932b188bbd48b6a57de6f9662e1, type: 3}
   EmptyTilePrefabName: EmptyTilePrefab
   ExplosionPrefabName: Explosion
   SelectedTile: {fileID: 0}
