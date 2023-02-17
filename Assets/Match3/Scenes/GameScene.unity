@@ -276,10 +276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -457,8 +457,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -522,10 +522,10 @@ RectTransform:
   m_Father: {fileID: 381276176}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.9125, y: 201.02}
-  m_SizeDelta: {x: 370.175, y: 39.9897}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 500, y: -200}
+  m_SizeDelta: {x: 900, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1112461466
 GameObject:
@@ -650,6 +650,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42784409b76c4d247ac0f65250457a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Boards:
+  - {fileID: 11400000, guid: 85045a4c11be4564f9d030c130a780bc, type: 2}
+  - {fileID: 11400000, guid: 33b35e4883bef484bbffb59eedd77706, type: 2}
+  LevelIndex: 8
   Board: {fileID: 1732071608}
   UI: {fileID: 381276175}
 --- !u!4 &1624196384
@@ -696,17 +700,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b2552f491866b47821b507d476138c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardWidth: 7
-  BoardHeight: 7
+  BoardWidth: 0
+  BoardHeight: 0
   GameBoard: 
-  TilePrefabs:
-  - {fileID: 689879907821177530, guid: 63d272fb2b49cf84f9d423f2995cef15, type: 3}
-  - {fileID: 7438421864307889641, guid: c1859450c5e7fb241a36535bf9610d7c, type: 3}
-  - {fileID: 3477969507044406893, guid: ea49f138e06d90c44b38759f406c3c8f, type: 3}
-  - {fileID: 5967407842233522199, guid: 0e42bac83a784614087475e39730248a, type: 3}
-  - {fileID: 6238946790574432746, guid: 5188ab3e65cab2945bf98aa4a5fe3eb6, type: 3}
-  EmptyTilePrefab: {fileID: 5299183930411898699, guid: 8e77ce9d508273a4cb46b588aa456718, type: 3}
-  ExplosionPrefab: {fileID: 8880499984602823145, guid: 56efac4a2df3df440ab4ad8591626e6d, type: 3}
+  TilePrefabName: BaseTilePrefab
+  TilePrefabSprites: []
+  EmptyTilePrefabName: EmptyTilePrefab
+  ExplosionPrefabName: Explosion
   SelectedTile: {fileID: 0}
   SwapTile: {fileID: 0}
   MoveCount: 0
@@ -843,10 +843,10 @@ RectTransform:
   m_Father: {fileID: 381276176}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.9125, y: 241.00513}
-  m_SizeDelta: {x: 370.175, y: 39.9897}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 500, y: -100}
+  m_SizeDelta: {x: 900, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2011651741
 CanvasRenderer:
@@ -903,8 +903,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

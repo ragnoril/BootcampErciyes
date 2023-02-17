@@ -17,5 +17,12 @@ namespace CandyGame
         {
             return (int)(transform.localPosition.y * -1);
         }
+
+        public void SetSprite(Sprite sprite)
+        {
+            SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
+
+            renderer.sprite = sprite;
+        }
     }
 }

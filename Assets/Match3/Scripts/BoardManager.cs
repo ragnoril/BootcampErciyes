@@ -13,9 +13,10 @@ namespace CandyGame
 
         public int[] GameBoard;
 
-        public GameObject[] TilePrefabs;
-        public GameObject EmptyTilePrefab;
-        public GameObject ExplosionPrefab;
+        public string TilePrefabName;
+        public Sprite[] TilePrefabSprites;
+        public string EmptyTilePrefabName;
+        public string ExplosionPrefabName;
 
         public Tile SelectedTile;
         public Tile SwapTile;
@@ -28,51 +29,66 @@ namespace CandyGame
 
         private GameManager _manager;
 
-        public void InitBoard()
+        public void InitBoard(BoardDataSO boardData)
         {
             MoveCount = 0;
             PopCount = 0;
 
+            BoardWidth = boardData.BoardWidth;
+            BoardHeight = boardData.BoardHeight;
             GameBoard = new int[BoardWidth * BoardHeight];
-
-            for(int i = 0; i < GameBoard.Length; i++)
+            for(int i = 0; i < boardData.GameBoard.Length; i++)
             {
-                GameBoard[i] = -1;
+                GameBoard[i] = boardData.GameBoard[i];
             }
 
-            FillBoardRandom();
+            TilePrefabSprites = new Sprite[boardData.TilePrefabSprites.Length];
+            for (int i = 0; i < boardData.TilePrefabSprites.Length; i++)
+            {
+                TilePrefabSprites[i] = boardData.TilePrefabSprites[i];
+            }
+
+            //FillBoardRandom();
             RenderBoard();
 
         }
 
-        private void FillBoardRandom()
+        public void FillBoardRandom()
         {
             for(int i =0; i < GameBoard.Length; i++)
             {
-                GameBoard[i] = UnityEngine.Random.Range(0, TilePrefabs.Length);
+                GameBoard[i] = UnityEngine.Random.Range(0, TilePrefabSprites.Length);
             }
         }
 
-        private void RenderBoard()
+
+        public void RenderBoard()
         {
             for (int j = 0; j < BoardHeight; j++)
             {
                 for (int i = 0; i < BoardWidth; i++)
                 {
-                    GameObject emptyTile = Instantiate(EmptyTilePrefab);
+                    GameObject emptyTile = Instantiate(Resources.Load<GameObject>(EmptyTilePrefabName));
                     emptyTile.transform.SetParent(transform);
                     emptyTile.transform.localPosition = new Vector3(i, -j, 0f);
 
                     int tileId = GameBoard[GetBoardPosition(i, j)];
 
                     if (tileId < 0) return;
-
-                    GameObject tile = Instantiate(TilePrefabs[tileId]);
-                    tile.transform.SetParent(transform);
-                    tile.transform.localPosition = new Vector3(i, -j, 0f);
-
+                    CreateTile(tileId, i, j);
                 }
             }
+        }
+
+        public void CreateTile(int tileId, int x, int y)
+        {
+            GameObject tileObject = Instantiate(Resources.Load<GameObject>(TilePrefabName));
+            tileObject.transform.SetParent(transform);
+            tileObject.transform.localPosition = new Vector3(x, -y, 0f);
+
+            Tile tile = tileObject.GetComponent<Tile>();
+            tile.TileType = tileId;
+            tile.SetSprite(TilePrefabSprites[tileId]);
         }
 
         public int GetBoardPosition(int x, int y)
@@ -155,10 +171,8 @@ namespace CandyGame
                     int pos = GetBoardPosition(i, j);
                     if (GameBoard[pos] < 0)
                     {
-                        GameBoard[pos] = UnityEngine.Random.Range(0, TilePrefabs.Length);
-                        GameObject tile = Instantiate(TilePrefabs[GameBoard[pos]]);
-                        tile.transform.SetParent(transform);
-                        tile.transform.localPosition = new Vector3(i, -j, 0f);
+                        GameBoard[pos] = UnityEngine.Random.Range(0, TilePrefabSprites.Length);
+                        CreateTile(GameBoard[pos], i, j);
                     }
                 }
             }
@@ -346,16 +360,18 @@ namespace CandyGame
 
             GameBoard[GetBoardPosition(tileX, tileY)] = -1;
 
-            GameObject explosion = Instantiate(ExplosionPrefab, tile.transform.position, Quaternion.identity);
+            GameObject explosion = Instantiate(Resources.Load<GameObject>(ExplosionPrefabName));
+            explosion.transform.position = tile.transform.position;
 
             Destroy(explosion, 1f);
             Destroy(tile.gameObject);
         }
 
-        public void Init(GameManager gameManager)
+        public void Init(GameManager gameManager, BoardDataSO boardData)
         {
             _manager = gameManager;
-            InitBoard();
+
+            InitBoard(boardData);
         }
     }
 }
