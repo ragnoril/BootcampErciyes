@@ -655,7 +655,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 33b35e4883bef484bbffb59eedd77706, type: 2}
   - {fileID: 11400000, guid: 6abf7efa19529be44aee081b012c397a, type: 2}
   - {fileID: 11400000, guid: 067258d1a969f234b9ded1f71d4800b6, type: 2}
-  LevelIndex: 3
+  LevelIndex: 1
   Board: {fileID: 1732071608}
   UI: {fileID: 381276175}
 --- !u!4 &1624196384

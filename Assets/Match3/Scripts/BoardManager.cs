@@ -107,6 +107,13 @@ namespace CandyGame
 
         private void Update()
         {
+            HandleTouchInput();
+            HandlePCInput();
+        }
+
+        private void HandlePCInput()
+        {
+#if UNITY_STANDALONE_WIN
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
@@ -152,6 +159,62 @@ namespace CandyGame
                 }
                 
             }
+#endif
+        }
+
+        private void HandleTouchInput()
+        {
+#if UNITY_ANDROID
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.rawPosition), Vector2.zero);
+                    if (hitInfo.collider != null)
+                    {
+                        SelectedTile = hitInfo.collider.GetComponent<Tile>();
+                    }
+                }
+
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(touch.position);
+
+                    int selectedX = SelectedTile.GetX();
+                    int selectedY = SelectedTile.GetY();
+
+                    int swipeX = (int)Mathf.Clamp(Mathf.Round(mousePos.x - SelectedTile.transform.position.x), -1f, 1f);
+                    int swipeY = (int)Mathf.Clamp(Mathf.Round(SelectedTile.transform.position.y - mousePos.y), -1f, 1f);
+
+                    int x = selectedX + swipeX;
+                    int y = selectedY + swipeY;
+
+                    SwapTile = GetTile(x, y);
+
+                    if (SwapTile != null)
+                    {
+                        int selectedPos = GetBoardPosition(selectedX, selectedY);
+                        int swapPos = GetBoardPosition(SwapTile.GetX(), SwapTile.GetY());
+
+                        GameBoard[selectedPos] = SwapTile.TileType;
+                        GameBoard[swapPos] = SelectedTile.TileType;
+
+                        Vector3 tempPos = SwapTile.transform.position;
+                        SwapTile.transform.position = SelectedTile.transform.position;
+                        SelectedTile.transform.position = tempPos;
+
+                        CheckForCombos();
+
+                        StartCoroutine(HandleEmptySpaces());
+
+                        MoveCount += 1;
+                        OnBoardMove(MoveCount);
+                    }
+                }
+            }
+#endif
         }
 
         IEnumerator HandleEmptySpaces()
